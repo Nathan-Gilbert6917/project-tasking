@@ -3,7 +3,7 @@ package com.nathangilbert.projecttasking.orm.dao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.nathangilbert.projecttasking.exceptions.UserNotFoundException;
+import com.nathangilbert.projecttasking.rest.exceptions.UserNotFoundException;
 import com.nathangilbert.projecttasking.orm.entity.User;
 
 import jakarta.persistence.EntityManager;
@@ -29,7 +29,7 @@ public class UserDAO implements IUserDAO {
     public User findById(long userId) {
         User user = entityManager.find(User.class, userId);
         if (user == null) {
-            throw new UserNotFoundException("User not found for user " + userId);
+            throw new com.nathangilbert.projecttasking.rest.exceptions.UserNotFoundException("User not found for user " + userId);
         }
         return user;
     }

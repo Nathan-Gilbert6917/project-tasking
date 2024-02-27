@@ -20,7 +20,6 @@ public class UserDAO implements IUserDAO {
     }
 
     @Override
-    @Transactional
     public void register(User user) {
         entityManager.persist(user);
     }
@@ -35,7 +34,6 @@ public class UserDAO implements IUserDAO {
     }
 
     @Override
-    @Transactional
     public void updateUser(long userId, User updatedUser) {
         User user = entityManager.find(User.class, userId);
         if (user == null) {
@@ -54,7 +52,6 @@ public class UserDAO implements IUserDAO {
     }
 
     @Override
-    @Transactional
     public void deleteUser(long userId) {
         User user = entityManager.find(User.class, userId);
         if (user == null) {

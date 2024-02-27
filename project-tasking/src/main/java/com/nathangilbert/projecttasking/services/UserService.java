@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import com.nathangilbert.projecttasking.orm.dao.UserDAO;
 import com.nathangilbert.projecttasking.orm.entity.User;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class UserService implements IUserService{
     
@@ -15,6 +17,7 @@ public class UserService implements IUserService{
     }
 
     @Override
+    @Transactional
     public void register(User user) {
         this.userDAO.register(user);
     }
@@ -25,11 +28,13 @@ public class UserService implements IUserService{
     }
 
     @Override
+    @Transactional
     public void updateUser(long userId, User user) {
         this.userDAO.updateUser(userId, user);
     }
 
     @Override
+    @Transactional
     public void deleteUser(long userId) {
         this.userDAO.deleteUser(userId);
     }

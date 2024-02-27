@@ -2,6 +2,8 @@ package com.nathangilbert.projecttasking.orm.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.nathangilbert.projecttasking.exceptions.UserNotFoundException;
 import com.nathangilbert.projecttasking.orm.entity.User;
 
 import jakarta.persistence.EntityManager;
@@ -26,6 +28,9 @@ public class UserDAO implements IUserDAO {
     @Override
     public User findById(long userId) {
         User user = entityManager.find(User.class, userId);
+        if (user == null) {
+            throw new UserNotFoundException("User not found for user " + userId);
+        }
         return user;
     }
 
@@ -33,6 +38,10 @@ public class UserDAO implements IUserDAO {
     @Transactional
     public void updateUser(long userId, User updatedUser) {
         User user = entityManager.find(User.class, userId);
+        if (user == null) {
+            throw new UserNotFoundException("User not found for user " + userId);
+        }
+
         String updatedEmail = updatedUser.getEmail();
         String updatedUsername = updatedUser.getUsername();
         if (updatedEmail != null) {
@@ -48,6 +57,9 @@ public class UserDAO implements IUserDAO {
     @Transactional
     public void deleteUser(long userId) {
         User user = entityManager.find(User.class, userId);
+        if (user == null) {
+            throw new UserNotFoundException("User not found for user " + userId);
+        }
         entityManager.remove(user);
     }
 }

@@ -34,7 +34,7 @@ public class ProjectRestController {
     public ResponseEntity<String> createProject(@RequestBody Project project) {
         projectService.createProject(project);
         projectService.joinProject(project.getProjectId(), project.getOwnerId());
-        return ResponseEntity.status(HttpStatus.OK).body("Successully registered " + project);
+        return ResponseEntity.status(HttpStatus.OK).body("Successully created project:" + project);
     }
 
     @GetMapping("/{projectId}")

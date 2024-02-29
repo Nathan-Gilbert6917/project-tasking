@@ -8,6 +8,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import jakarta.persistence.EntityManager;
 import java.util.ArrayList;
@@ -17,6 +19,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@SpringJUnitConfig
+@SpringBootTest
 public class UserDAOTest {
 
     @Mock
@@ -105,6 +109,7 @@ public class UserDAOTest {
         } catch (UserNotFoundException exception) {
             assertTrue(exception.getMessage().contains("User not found for ID:" + userId));
         }
+        verifyNoMoreInteractions(entityManager);
     }
 
     @Test
@@ -133,6 +138,7 @@ public class UserDAOTest {
         } catch (UserNotFoundException exception) {
             assertTrue(exception.getMessage().contains("User not found for ID:"+userId));
         }
+        verifyNoMoreInteractions(entityManager);
     }
 
     @Test

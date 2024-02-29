@@ -58,7 +58,8 @@ public class ProjectService implements IProjectService{
     @Override
     @Transactional
     public void joinProject(long projectId, long userId) {
-        this.projectUsersDAO.createProjectUserAssociation(new ProjectUsers(userId, projectId));
+        ProjectUsers projectUsers = new ProjectUsers(userId, projectId);
+        this.projectUsersDAO.createProjectUserAssociation(projectUsers);
     }
 
     @Override

@@ -2,14 +2,14 @@ package com.nathangilbert.projecttasking.orm.dao;
 
 import com.nathangilbert.projecttasking.orm.entity.Project;
 import com.nathangilbert.projecttasking.orm.entity.ProjectUsers;
-import com.nathangilbert.projecttasking.orm.entity.User;
 import com.nathangilbert.projecttasking.rest.exceptions.ProjectNotFoundException;
-import com.nathangilbert.projecttasking.rest.exceptions.UserNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
@@ -22,6 +22,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@SpringJUnitConfig
+@SpringBootTest
 public class ProjectUsersDAOTest {
 
     @Mock
@@ -44,9 +46,9 @@ public class ProjectUsersDAOTest {
         long userId = 1;
         long projectId = 2;
         ProjectUsers projectUsers = new ProjectUsers(userId, projectId);
-        
+
         projectUsersDAO.createProjectUserAssociation(projectUsers);
-        
+
         verify(entityManager).persist(projectUsers);
     }
 
@@ -245,22 +247,17 @@ public class ProjectUsersDAOTest {
         long projectId = 1;
         long userId = 3;
 
-        ProjectUsers projectUser = new ProjectUsers(userId, projectId);
-
         when(entityManager.createQuery("FROM ProjectUsers WHERE projectId = :projectId AND userId = :userId",
                 ProjectUsers.class)).thenReturn(
                         projectUserQuery);
-        when(projectUserQuery.getSingleResult()).thenReturn(null);
-
-        projectUsersDAO.deleteProjectUserAssociation(projectId, userId);
+        when(projectUserQuery.getSingleResult()).thenThrow(new NoResultException());
 
         try {
-            projectUser = projectUserQuery.getSingleResult();
-        } catch (NoResultException exception) {
+            projectUsersDAO.deleteProjectUserAssociation(projectId, userId);
+        } catch (ProjectNotFoundException exception) {
             assertTrue(
                     exception.getMessage().contains("Project user associations not found for ProjectId:" + projectId + " UserId:" + userId));
         }
-
-        verify(entityManager).remove(projectUser);
+        verifyNoMoreInteractions(entityManager);
     }
 }

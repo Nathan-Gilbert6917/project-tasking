@@ -1,14 +1,14 @@
 package com.nathangilbert.projecttasking.orm.dao;
 
 import com.nathangilbert.projecttasking.orm.entity.Project;
-import com.nathangilbert.projecttasking.orm.entity.User;
 import com.nathangilbert.projecttasking.rest.exceptions.ProjectNotFoundException;
-import com.nathangilbert.projecttasking.rest.exceptions.UserNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -20,6 +20,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@SpringJUnitConfig
+@SpringBootTest
 public class ProjectDAOTest {
 
     @Mock
@@ -125,7 +127,7 @@ public class ProjectDAOTest {
         } catch (ProjectNotFoundException exception) {
             assertTrue(exception.getMessage().contains("Project not found for ID:" + projectId));
         }
-
+        verifyNoMoreInteractions(entityManager);
         assertNotEquals(updatedProject.getProjectName(), project.getProjectName());
         assertNotEquals(updatedProject.getDescription(), project.getDescription());
         assertNotEquals(updatedProject.getAgingTaskDays(), project.getAgingTaskDays());
@@ -163,6 +165,7 @@ public class ProjectDAOTest {
         } catch (ProjectNotFoundException exception) {
             assertTrue(exception.getMessage().contains("Project not found for ID:"+projectId));
         }
+        verifyNoMoreInteractions(entityManager);
     }
 
     @Test
@@ -198,6 +201,7 @@ public class ProjectDAOTest {
         } catch (ProjectNotFoundException exception) {
             assertTrue(exception.getMessage().contains("No projects owned by UserID:" + projectId));
         }
+        verifyNoMoreInteractions(entityManager);
         assertNotEquals(projects, result);
     }
 }

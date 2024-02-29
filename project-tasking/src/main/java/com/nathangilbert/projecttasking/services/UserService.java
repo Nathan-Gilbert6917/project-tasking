@@ -1,8 +1,11 @@
 package com.nathangilbert.projecttasking.services;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.nathangilbert.projecttasking.orm.dao.UserDAO;
+import com.nathangilbert.projecttasking.orm.entity.Project;
 import com.nathangilbert.projecttasking.orm.entity.User;
 
 import jakarta.transaction.Transactional;
@@ -37,5 +40,10 @@ public class UserService implements IUserService{
     @Transactional
     public void deleteUser(long userId) {
         this.userDAO.deleteUser(userId);
+    }
+
+    @Override
+    public List<Project> getProjects(long userId) {
+        return this.userDAO.getUsersProjects(userId);
     }
 }

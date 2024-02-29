@@ -27,7 +27,9 @@ public class User {
     @Column(name = "created_at")
     private Timestamp createdAt;
 
-    public User() {}
+    public User(){
+        this.createdAt = new Timestamp(System.currentTimeMillis());
+    }
 
     public User(String username, String email) {
         this.username = username;
@@ -45,20 +47,24 @@ public class User {
         return this.username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getEmail() {
         return this.email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public Timestamp getCreatedAtTime() {
         return this.createdAt;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override

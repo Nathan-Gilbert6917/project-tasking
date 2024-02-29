@@ -1,5 +1,8 @@
 package com.nathangilbert.projecttasking.orm.dao;
 
+import java.util.List;
+
+import com.nathangilbert.projecttasking.orm.entity.Project;
 import com.nathangilbert.projecttasking.orm.entity.User;
 
 public interface IUserDAO {
@@ -11,4 +14,6 @@ public interface IUserDAO {
     void updateUser(long userId, User user);
 
     void deleteUser(long userId);
+
+    List<Project> getUsersProjects(long userId);
 }

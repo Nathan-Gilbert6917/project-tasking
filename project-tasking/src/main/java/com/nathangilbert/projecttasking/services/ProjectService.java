@@ -8,6 +8,7 @@ import com.nathangilbert.projecttasking.orm.dao.ProjectDAO;
 import com.nathangilbert.projecttasking.orm.dao.ProjectUsersDAO;
 import com.nathangilbert.projecttasking.orm.entity.Project;
 import com.nathangilbert.projecttasking.orm.entity.ProjectUsers;
+import com.nathangilbert.projecttasking.services.interfaces.IProjectService;
 
 import jakarta.transaction.Transactional;
 

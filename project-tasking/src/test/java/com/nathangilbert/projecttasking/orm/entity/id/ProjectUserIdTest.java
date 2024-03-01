@@ -1,4 +1,4 @@
-package com.nathangilbert.projecttasking.orm.id;
+package com.nathangilbert.projecttasking.orm.entity.id;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

@@ -1,4 +1,4 @@
-package com.nathangilbert.projecttasking.services;
+package com.nathangilbert.projecttasking.services.interfaces;
 
 import java.util.List;
 

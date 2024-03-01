@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.nathangilbert.projecttasking.rest.exceptions.UserNotFoundException;
+import com.nathangilbert.projecttasking.orm.dao.interfaces.IUserDAO;
 import com.nathangilbert.projecttasking.orm.entity.Project;
 import com.nathangilbert.projecttasking.orm.entity.User;
 
@@ -34,7 +35,7 @@ public class UserDAO implements IUserDAO {
     public User findById(long userId) {
         User user = entityManager.find(User.class, userId);
         if (user == null) {
-            throw new com.nathangilbert.projecttasking.rest.exceptions.UserNotFoundException(USER_NOT_FOUND_MESSAGE + userId);
+            throw new UserNotFoundException(USER_NOT_FOUND_MESSAGE + userId);
         }
         return user;
     }
@@ -49,10 +50,10 @@ public class UserDAO implements IUserDAO {
         String updatedEmail = updatedUser.getEmail();
         String updatedUsername = updatedUser.getUsername();
         if (updatedEmail != null) {
-            user.setEmail(updatedUser.getEmail());
+            user.setEmail(updatedEmail);
         }
         if (updatedUsername != null) {
-            user.setUsername(updatedUser.getUsername());
+            user.setUsername(updatedUsername);
         }
         entityManager.merge(user);
     }

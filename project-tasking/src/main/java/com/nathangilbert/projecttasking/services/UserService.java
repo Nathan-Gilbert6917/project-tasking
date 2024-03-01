@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.nathangilbert.projecttasking.orm.dao.UserDAO;
 import com.nathangilbert.projecttasking.orm.entity.Project;
 import com.nathangilbert.projecttasking.orm.entity.User;
+import com.nathangilbert.projecttasking.services.interfaces.IUserService;
 
 import jakarta.transaction.Transactional;
 

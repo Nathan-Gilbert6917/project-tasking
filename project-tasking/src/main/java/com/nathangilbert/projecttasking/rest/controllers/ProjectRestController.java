@@ -44,18 +44,6 @@ public class ProjectRestController {
         return ResponseEntity.status(HttpStatus.OK).body(project);
     }
 
-    @GetMapping("/owner/{ownerId}")
-    public ResponseEntity<List<Project>> getOwnersProjects(@PathVariable long ownerId) {
-        List<Project> projects = projectService.getOwnersProjects(ownerId);
-        return ResponseEntity.status(HttpStatus.OK).body(projects);
-    }
-
-    @GetMapping("/{projectId}/users")
-    public ResponseEntity<List<Long>> getProjectUserIds(@PathVariable long projectId) {
-        List<Long> userIds = projectService.getProjectUserIds(projectId);
-        return ResponseEntity.status(HttpStatus.OK).body(userIds);
-    }
-
     @PutMapping("/{projectId}")
     public ResponseEntity<String> updateProject(@PathVariable long projectId, @RequestBody Project project) {
         projectService.updateProject(projectId, project);
@@ -68,11 +56,15 @@ public class ProjectRestController {
         return ResponseEntity.status(HttpStatus.OK).body("Project deleted successfully");
     }
 
+    // Adding a new user to the project
+
     @PostMapping("/{projectId}/add/{userId}")
     public ResponseEntity<String> addUser(@PathVariable long projectId, @PathVariable long userId) {
         projectService.joinProject(projectId, userId);
         return ResponseEntity.status(HttpStatus.OK).body("Successully added User:" + userId + " to Project:" + projectId);
     }
+
+    // Removing a user from the project
 
     @PostMapping("/{projectId}/remove/{userId}")
     public ResponseEntity<String> removeUser(@PathVariable long projectId, @PathVariable long userId) {
@@ -81,10 +73,28 @@ public class ProjectRestController {
                 .body("Successully removed User:" + userId + " from Project:" + projectId);
     }
 
+    // Get all projects owned by a user
+
+    @GetMapping("/owner/{ownerId}")
+    public ResponseEntity<List<Project>> getOwnersProjects(@PathVariable long ownerId) {
+        List<Project> projects = projectService.getOwnersProjects(ownerId);
+        return ResponseEntity.status(HttpStatus.OK).body(projects);
+    }
+
+    // Get all tasks associated with a project
+
     @GetMapping("/{projectId}/tasks")
     public ResponseEntity<List<Task>> getAllProjectTasks(@PathVariable long projectId) {
         List<Task> tasks = projectService.getProjectTasks(projectId);
         return ResponseEntity.status(HttpStatus.OK).body(tasks);
+    }
+
+    // Get all user ids associated with a project
+
+    @GetMapping("/{projectId}/users")
+    public ResponseEntity<List<Long>> getProjectUserIds(@PathVariable long projectId) {
+        List<Long> userIds = projectService.getProjectUserIds(projectId);
+        return ResponseEntity.status(HttpStatus.OK).body(userIds);
     }
     
 }

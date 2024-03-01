@@ -53,12 +53,16 @@ public class TaskRestController {
         return ResponseEntity.status(HttpStatus.OK).body("Task deleted successfully");
     }
 
+    // Assign a user to a task
+
     @PostMapping("/{taskId}/assign/{userId}")
     public ResponseEntity<String> assignUserToTask(@PathVariable long taskId, @PathVariable long userId) {
         taskService.assignTask(userId, taskId);
         return ResponseEntity.status(HttpStatus.OK)
                 .body("Successully assigned User:" + userId + " to Task:" + taskId);
     }
+
+    // Unassign a user from a task
 
     @PostMapping("/{taskId}/unassign/{userId}")
     public ResponseEntity<String> unassignUserFromTask(@PathVariable long taskId, @PathVariable long userId) {

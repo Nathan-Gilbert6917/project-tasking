@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nathangilbert.projecttasking.orm.entity.Project;
+import com.nathangilbert.projecttasking.orm.entity.Task;
 import com.nathangilbert.projecttasking.services.ProjectService;
 
 @RestController
@@ -78,6 +79,12 @@ public class ProjectRestController {
         projectService.leaveProject(projectId, userId);
         return ResponseEntity.status(HttpStatus.OK)
                 .body("Successully removed User:" + userId + " from Project:" + projectId);
+    }
+
+    @GetMapping("/{projectId}/tasks")
+    public ResponseEntity<List<Task>> getAllProjectTasks(@PathVariable long projectId) {
+        List<Task> tasks = projectService.getProjectTasks(projectId);
+        return ResponseEntity.status(HttpStatus.OK).body(tasks);
     }
     
 }

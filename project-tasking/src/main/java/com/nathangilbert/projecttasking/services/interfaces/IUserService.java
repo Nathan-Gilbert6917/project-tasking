@@ -3,6 +3,7 @@ package com.nathangilbert.projecttasking.services.interfaces;
 import java.util.List;
 
 import com.nathangilbert.projecttasking.orm.entity.Project;
+import com.nathangilbert.projecttasking.orm.entity.Task;
 import com.nathangilbert.projecttasking.orm.entity.User;
 
 public interface IUserService {
@@ -16,4 +17,8 @@ public interface IUserService {
     void deleteUser(long userId);
 
     List<Project> getProjects(long userId);
+
+    List<Task> getAllAssignedTasks(long userId);
+     
+    List<Task> getAllAssignedTasks(long userId, long projectId);
 }

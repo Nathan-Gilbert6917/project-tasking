@@ -3,6 +3,7 @@ package com.nathangilbert.projecttasking.services.interfaces;
 import java.util.List;
 
 import com.nathangilbert.projecttasking.orm.entity.Project;
+import com.nathangilbert.projecttasking.orm.entity.Task;
 
 public interface IProjectService {
 
@@ -21,4 +22,6 @@ public interface IProjectService {
     void joinProject(long projectId, long userId);
 
     void leaveProject(long projectId, long userId);
+
+    List<Task> getProjectTasks(long projectId);
 }

@@ -44,8 +44,6 @@ public class UserTaskDAOTest {
 
     private final long USER_ID = 1;
     private final long TASK_ID = 1;
-    private final long PROJECT_ID = 1;
-
 
     @Test
     public void testAssignUserToTask() {

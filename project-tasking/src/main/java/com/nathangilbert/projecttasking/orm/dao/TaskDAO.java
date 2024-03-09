@@ -90,7 +90,7 @@ public class TaskDAO implements ITaskDAO {
         List<Task> tasks = assignedTasksQuery.getResultList();
 
         if (tasks == null || tasks.size() == 0) {
-            throw new TaskNotFoundException("0 Tasks were not found for projectId:" + projectId);
+            throw new TaskNotFoundException("0 Tasks were found for projectId:" + projectId);
         }
 
         return tasks;

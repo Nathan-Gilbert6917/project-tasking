@@ -6,8 +6,11 @@ import org.springframework.stereotype.Service;
 
 import com.nathangilbert.projecttasking.orm.dao.ProjectDAO;
 import com.nathangilbert.projecttasking.orm.dao.ProjectUsersDAO;
+import com.nathangilbert.projecttasking.orm.dao.TaskDAO;
 import com.nathangilbert.projecttasking.orm.entity.Project;
 import com.nathangilbert.projecttasking.orm.entity.ProjectUsers;
+import com.nathangilbert.projecttasking.orm.entity.Task;
+import com.nathangilbert.projecttasking.services.interfaces.IProjectService;
 
 import jakarta.transaction.Transactional;
 
@@ -16,10 +19,12 @@ public class ProjectService implements IProjectService{
     
     private ProjectDAO projectDAO;
     private ProjectUsersDAO projectUsersDAO;
+    private TaskDAO taskDAO;
 
-    public ProjectService(ProjectDAO projectDAO, ProjectUsersDAO projectUsersDAO) {
+    public ProjectService(ProjectDAO projectDAO, ProjectUsersDAO projectUsersDAO, TaskDAO taskDAO) {
         this.projectDAO = projectDAO;
         this.projectUsersDAO = projectUsersDAO;
+        this.taskDAO = taskDAO;
     }
 
     @Override
@@ -66,5 +71,10 @@ public class ProjectService implements IProjectService{
     @Transactional
     public void leaveProject(long projectId, long userId) {
         this.projectUsersDAO.deleteProjectUserAssociation(projectId, userId);
+    }
+
+    @Override
+    public List<Task> getProjectTasks(long projectId) {
+        return this.taskDAO.getProjectTasks(projectId);
     }
 }

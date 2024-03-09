@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.nathangilbert.projecttasking.rest.exceptions.ProjectNotFoundException;
+import com.nathangilbert.projecttasking.orm.dao.interfaces.IProjectDAO;
 import com.nathangilbert.projecttasking.orm.entity.Project;
 
 import jakarta.persistence.EntityManager;
@@ -60,7 +61,6 @@ public class ProjectDAO implements IProjectDAO {
         }
 
         if (updatedProjectAgingTaskDays >= 0 && updatedProjectAgingTaskDays != project.getAgingTaskDays()) {
-            System.out.println(updatedProjectAgingTaskDays + " days");
             project.setAgingTaskDays(updatedProjectAgingTaskDays);
         }
 

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nathangilbert.projecttasking.orm.entity.Project;
+import com.nathangilbert.projecttasking.orm.entity.Task;
 import com.nathangilbert.projecttasking.orm.entity.User;
 import com.nathangilbert.projecttasking.services.UserService;
 
@@ -55,10 +56,28 @@ public class UserRestController {
         return ResponseEntity.status(HttpStatus.OK).body("User deleted successfully");
     }
 
+    // Get all projects a user belongs to
+
     @GetMapping("/{userId}/projects")
     public ResponseEntity<List<Project>> getProjects(@PathVariable long userId) {
         List<Project> projects = userService.getProjects(userId);
         return ResponseEntity.status(HttpStatus.OK).body(projects);
+    }
+
+    // Get all tasks assigned to a user from all projects
+
+    @GetMapping("/{userId}/tasks")
+    public ResponseEntity<List<Task>> getAllAssignedTasks(@PathVariable long userId) {
+        List<Task> tasks = userService.getAllAssignedTasks(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(tasks);
+    }
+
+    // Get all tasks assigned to a user from a project
+
+    @GetMapping("/{userId}/tasks/{projectId}")
+    public ResponseEntity<List<Task>> getAssignedTasksFromProject(@PathVariable long userId, @PathVariable long projectId) {
+        List<Task> tasks = userService.getAllAssignedTasks(userId, projectId);
+        return ResponseEntity.status(HttpStatus.OK).body(tasks);
     }
 
 }

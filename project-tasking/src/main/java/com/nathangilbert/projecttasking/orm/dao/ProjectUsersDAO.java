@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.nathangilbert.projecttasking.orm.dao.interfaces.IProjectUsersDAO;
 import com.nathangilbert.projecttasking.orm.entity.Project;
 import com.nathangilbert.projecttasking.orm.entity.ProjectUsers;
 import com.nathangilbert.projecttasking.rest.exceptions.ProjectNotFoundException;

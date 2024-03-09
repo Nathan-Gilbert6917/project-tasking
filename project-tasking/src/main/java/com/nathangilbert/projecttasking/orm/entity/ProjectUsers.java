@@ -1,6 +1,6 @@
 package com.nathangilbert.projecttasking.orm.entity;
 
-import com.nathangilbert.projecttasking.orm.id.ProjectUserId;
+import com.nathangilbert.projecttasking.orm.entity.id.ProjectUserId;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;

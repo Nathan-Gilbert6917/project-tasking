@@ -1,4 +1,4 @@
-package com.nathangilbert.projecttasking.orm.dao;
+package com.nathangilbert.projecttasking.orm.dao.interfaces;
 
 import java.util.List;
 

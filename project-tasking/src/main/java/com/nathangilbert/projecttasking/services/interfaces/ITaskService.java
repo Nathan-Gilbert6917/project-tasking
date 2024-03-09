@@ -1,7 +1,5 @@
 package com.nathangilbert.projecttasking.services.interfaces;
 
-import java.util.List;
-
 import com.nathangilbert.projecttasking.orm.entity.Task;
 
 public interface ITaskService {

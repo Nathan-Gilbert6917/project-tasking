@@ -31,6 +31,16 @@ public class User {
         this.createdAt = new Timestamp(System.currentTimeMillis());
     }
 
+    public User(long userId) {
+        this.userId = userId;
+    }
+
+    public User(Long userId, String username, String email) {
+        this.userId = userId;
+        this.username = username;
+        this.email = email;
+    }
+
     public User(String username, String email) {
         this.username = username;
         this.email = email;

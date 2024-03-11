@@ -65,3 +65,9 @@ This approach allows for a straightforward process for additions. If I want to a
 5. Create a Service that utilizes the DAO and typically has similar or the same methods that the DAO has
 6. Create a REST API controller to map HTTP requests to access desired service methods and handle the data returned
 7. Call the API from the front end and handle errors and response
+
+### Notification system
+Using Server-Side Events
+- Clients subscribe and are added to a map of clients mapped with SseEmitters
+- Certain user actions will dispatch notification events to a list of clients
+- The clients EventSource will keep the client side up to date with notifications

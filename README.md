@@ -61,6 +61,13 @@ This approach allows for a straightforward process for additions. If I want to a
 1. Design the table or Data source 
 2. Create an Entity that resembles the columns of the table, create constructors, create getters and setters
 3. Create a DAO Interface holding the methods the DAO should perform
+
+### Notification system
+Using Server-Side Events
+- Clients subscribe and are added to a map of clients mapped with SseEmitters
+- Certain user actions will dispatch notification events to a list of clients
+- The clients EventSource will keep the client side up to date with notifications
+
 4. Create a DAO implementation of the DAO Interface implementing and injecting the entityManager, and entity into the constructor(s)
 5. Create a Service that utilizes the DAO and typically has similar or the same methods that the DAO has
 6. Create a REST API controller to map HTTP requests to access desired service methods and handle the data returned

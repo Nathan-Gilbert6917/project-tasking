@@ -1,5 +1,6 @@
 package com.nathangilbert.projecttasking.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -7,9 +8,12 @@ import org.springframework.stereotype.Service;
 import com.nathangilbert.projecttasking.orm.dao.ProjectDAO;
 import com.nathangilbert.projecttasking.orm.dao.ProjectUsersDAO;
 import com.nathangilbert.projecttasking.orm.dao.TaskDAO;
+import com.nathangilbert.projecttasking.orm.entity.Notification;
 import com.nathangilbert.projecttasking.orm.entity.Project;
 import com.nathangilbert.projecttasking.orm.entity.ProjectUsers;
 import com.nathangilbert.projecttasking.orm.entity.Task;
+import com.nathangilbert.projecttasking.orm.entity.User;
+import com.nathangilbert.projecttasking.orm.enums.NotificationEventType;
 import com.nathangilbert.projecttasking.services.interfaces.IProjectService;
 
 import jakarta.transaction.Transactional;
@@ -21,10 +25,13 @@ public class ProjectService implements IProjectService{
     private ProjectUsersDAO projectUsersDAO;
     private TaskDAO taskDAO;
 
-    public ProjectService(ProjectDAO projectDAO, ProjectUsersDAO projectUsersDAO, TaskDAO taskDAO) {
+    private NotificationService notificationService;
+
+    public ProjectService(ProjectDAO projectDAO, ProjectUsersDAO projectUsersDAO, TaskDAO taskDAO, NotificationService notificationService) {
         this.projectDAO = projectDAO;
         this.projectUsersDAO = projectUsersDAO;
         this.taskDAO = taskDAO;
+        this.notificationService = notificationService;
     }
 
     @Override
@@ -76,5 +83,35 @@ public class ProjectService implements IProjectService{
     @Override
     public List<Task> getProjectTasks(long projectId) {
         return this.taskDAO.getProjectTasks(projectId);
+    }
+
+    @Override
+    @Transactional
+    public void inviteUsersToProject(Project project, List<Long> recipientIds, User sender) {
+        long projectId = project.getProjectId();
+        String projectName = project.getProjectName();
+        Notification newNotification = new Notification();
+
+        StringBuilder jsonContent = new StringBuilder();
+
+        jsonContent.append("{");
+        jsonContent.append("'projectId:'"+projectId+",");
+        jsonContent.append("'projectName:'"+projectName);
+        jsonContent.append("}");
+
+        newNotification.setContent(jsonContent.toString());
+        newNotification.setMessage("You've been invited by "+sender.getUsername()+" to join Project: "+projectName);
+        newNotification.setSender(sender);
+        newNotification.setType(NotificationEventType.PROJECT_INVITE);
+
+        List<User> recipients = new ArrayList<>();
+        for (long recipientId : recipientIds) {
+            recipients.add(new User(recipientId));
+        }
+
+        newNotification.setRecipients(recipients);
+        Notification notification = this.notificationService.createNotification(newNotification);
+
+        this.notificationService.dispatchNotificationToClients(notification.getRecipients(), notification);
     }
 }

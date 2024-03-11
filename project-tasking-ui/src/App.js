@@ -18,6 +18,7 @@ function App() {
           userId: userId,
         });
         setLoggedIn(true);
+        console.log("Subscribed");
       } catch (error) {
         console.error("Error subscribing:", error);
       }
@@ -34,9 +35,9 @@ function App() {
         fetchData();
       };
 
-      eventSource.addEventListener("onTaskCommentUpdate", (event) => {
+      eventSource.addEventListener("onProjectInvite", (event) => {
         // Handle SSE message received
-        console.log("Task Comment Update", "SSE message received:", event.data);
+        console.log("Project Invite", "SSE message received:", event.data);
       });
 
       eventSource.addEventListener("onTaskCommentNew", (event) => {

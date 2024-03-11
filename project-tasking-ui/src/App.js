@@ -1,20 +1,55 @@
+import React, { useEffect, useState } from "react";
+
 import logo from "./logo.svg";
 import "./App.css";
 
 import axios from "axios";
 
 function App() {
-  function call() {
-    console.log("Calling");
-    axios
-      .get("http://localhost:8080/")
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
+  const [isLoggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const userId = 1;
+
+    const fetchData = async () => {
+      console.log("Subscribing...");
+      try {
+        await axios.post("http://localhost:8080/api/notifications/subscribe", {
+          userId: userId,
+        });
+        setLoggedIn(true);
+      } catch (error) {
+        console.error("Error subscribing:", error);
+      }
+    };
+
+    fetchData();
+
+    if (isLoggedIn) {
+      console.log("Event listener...");
+      const eventSource = new EventSource(
+        "http://localhost:8080/api/notifications/events/1"
+      );
+      eventSource.onerror = () => {
+        fetchData();
+      };
+
+      eventSource.addEventListener("onTaskCommentUpdate", (event) => {
+        // Handle SSE message received
+        console.log("Task Comment Update", "SSE message received:", event.data);
       });
-  }
+
+      eventSource.addEventListener("onTaskCommentNew", (event) => {
+        // Handle SSE message received
+        console.log("Task Comment New", "SSE message received:", event.data);
+      });
+
+      eventSource.addEventListener("onTaskStatusUpdate", (event) => {
+        // Handle SSE message received
+        console.log("Task Status Update", "SSE message received:", event.data);
+      });
+    }
+  }, [isLoggedIn]);
 
   return (
     <div className="App">
@@ -23,7 +58,6 @@ function App() {
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
-        <div onClick={call}>Call</div>
         <a
           className="App-link"
           href="https://reactjs.org"

@@ -67,7 +67,7 @@ This approach allows for a straightforward process for additions. If I want to a
 7. Call the API from the front end and handle errors and response
 
 ### Notification system
-Using Server-Side Events
+Using Server-Sent Events
 - Clients subscribe and are added to a map of clients mapped with SseEmitters
 - Certain user actions will dispatch notification events to a list of clients
 - The clients EventSource will keep the client side up to date with notifications

@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nathangilbert.projecttasking.orm.entity.InviteRequest;
 import com.nathangilbert.projecttasking.orm.entity.Project;
 import com.nathangilbert.projecttasking.orm.entity.Task;
 import com.nathangilbert.projecttasking.services.ProjectService;
@@ -95,6 +97,16 @@ public class ProjectRestController {
     public ResponseEntity<List<Long>> getProjectUserIds(@PathVariable long projectId) {
         List<Long> userIds = projectService.getProjectUserIds(projectId);
         return ResponseEntity.status(HttpStatus.OK).body(userIds);
+    }
+
+    @PostMapping("/{projectId}/invite")
+    public ResponseEntity<String> inviteUsersToProject(@PathVariable long projectId, @RequestBody InviteRequest request) {
+        Project project = projectService.findById(projectId);
+        String projectName = project.getProjectName();
+
+        projectService.inviteUsersToProject(project, request.getRecipienttIds(), request.getSender());
+
+        return ResponseEntity.status(HttpStatus.OK).body("Successfully invited users to the project " + projectName);
     }
     
 }

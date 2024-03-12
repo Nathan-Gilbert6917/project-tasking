@@ -45,7 +45,6 @@ public class UserTaskDAOTest {
     private final long USER_ID = 1;
     private final long TASK_ID = 1;
 
-
     @Test
     public void testAssignUserToTask() {
         userTaskDAO.assignUserToTask(USER_ID, TASK_ID);

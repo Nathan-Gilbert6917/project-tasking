@@ -1,5 +1,7 @@
 package com.nathangilbert.projecttasking.rest.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nathangilbert.projecttasking.orm.entity.Task;
+import com.nathangilbert.projecttasking.orm.entity.TaskComment;
+import com.nathangilbert.projecttasking.services.TaskCommentService;
 import com.nathangilbert.projecttasking.services.TaskService;
 
 
@@ -21,10 +25,12 @@ import com.nathangilbert.projecttasking.services.TaskService;
 public class TaskRestController {
 
     private TaskService taskService;
+    private TaskCommentService taskCommentService;
 
     @Autowired
-    public TaskRestController(TaskService taskService) {
+    public TaskRestController(TaskService taskService, TaskCommentService taskCommentService) {
         this.taskService = taskService;
+        this.taskCommentService = taskCommentService;
     }
 
     // Task CRUD
@@ -69,6 +75,14 @@ public class TaskRestController {
         taskService.unassignTask(userId, taskId);
         return ResponseEntity.status(HttpStatus.OK)
                 .body("Successully unassign User:" + userId + " from Task:" + taskId);
+    }
+
+    // Gather a list of comments for a task
+
+    @GetMapping("/{taskId}/comments")
+    public ResponseEntity<List<TaskComment>> getCommentOnTask(@PathVariable long taskId) {
+        List<TaskComment> taskComment = taskCommentService.getCommentsOnTask(taskId);
+        return ResponseEntity.status(HttpStatus.OK).body(taskComment);
     }
 
 }

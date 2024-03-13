@@ -16,7 +16,7 @@ public class ProjectTaskingApplication {
 	@Bean
 	public WebMvcConfigurer corsConfigurer() {
 		return new WebMvcConfigurer() {
-			public void addCorsMappings(CorsRegistry registry) {
+			public void addCorsMappings(@SuppressWarnings("null") CorsRegistry registry) {
 				registry.addMapping("/**")
 				.allowedMethods("*").allowedOrigins("http://localhost:3000");
 			}

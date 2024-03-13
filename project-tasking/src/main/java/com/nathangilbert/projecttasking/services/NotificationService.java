@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter.SseEvent
 import com.nathangilbert.projecttasking.orm.dao.NotificationDAO;
 import com.nathangilbert.projecttasking.orm.entity.Notification;
 import com.nathangilbert.projecttasking.orm.entity.User;
+import com.nathangilbert.projecttasking.rest.exceptions.NotificationException;
 import com.nathangilbert.projecttasking.services.interfaces.INotificationService;
 
 import jakarta.transaction.Transactional;
@@ -64,6 +65,9 @@ public class NotificationService implements INotificationService {
                 eventId = "id-"+ randomIndex;
             }
             String eventName = notification.getTypeString();
+            if (eventName == null) {
+                throw new NotificationException("Eventname not defined");
+            }
             SseEventBuilder event = SseEmitter.event().id(eventId).name(eventName).data(notification);
             try {
                 emitter.send(event);

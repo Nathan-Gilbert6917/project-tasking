@@ -20,8 +20,6 @@ import jakarta.transaction.Transactional;
 @Service
 public class NotificationService implements INotificationService {
 
-    private final String NOTIFICATION_EVENT_NAME = "onNotification";
-
     private final Map<Long, SseEmitter> clientEmitterMap = new ConcurrentHashMap<>();
 
     private NotificationDAO notificationDAO;

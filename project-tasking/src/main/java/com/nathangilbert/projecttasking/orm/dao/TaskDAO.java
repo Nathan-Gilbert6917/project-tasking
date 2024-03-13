@@ -1,6 +1,5 @@
 package com.nathangilbert.projecttasking.orm.dao;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -8,8 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.nathangilbert.projecttasking.orm.dao.interfaces.ITaskDAO;
+import com.nathangilbert.projecttasking.orm.entity.Sprint;
 import com.nathangilbert.projecttasking.orm.entity.Task;
+import com.nathangilbert.projecttasking.orm.entity.TaskStatusHistory;
+import com.nathangilbert.projecttasking.orm.enums.TaskPriority;
+import com.nathangilbert.projecttasking.orm.enums.TaskStatus;
 import com.nathangilbert.projecttasking.rest.exceptions.TaskNotFoundException;
+import com.nathangilbert.projecttasking.services.TaskStatusHistoryService;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -19,11 +23,14 @@ public class TaskDAO implements ITaskDAO {
 
     private EntityManager entityManager;
 
+    private TaskStatusHistoryService taskStatusHistoryService;
+
     private final String TASK_NOT_FOUND_MESSAGE = "Task not found for ID:";
 
     @Autowired
-    public TaskDAO(EntityManager entityManager) {
+    public TaskDAO(EntityManager entityManager, TaskStatusHistoryService taskStatusHistoryService) {
         this.entityManager = entityManager;
+        this.taskStatusHistoryService = taskStatusHistoryService;
     }
 
     @Override
@@ -52,6 +59,9 @@ public class TaskDAO implements ITaskDAO {
         LocalDateTime updatedDueDate = updatedTask.getDueDate();
         Integer updatedEffortValue = updatedTask.getEffortValue();
         Integer updatedRiskValue = updatedTask.getRiskValue();
+        Sprint updatedSprintValue = updatedTask.getSprint();
+        TaskPriority updatedPriority = updatedTask.getPriority();
+        TaskStatus updatedStatus = updatedTask.getStatus();
 
         if (updatedTaskname != null) {
             task.setTaskName(updatedTaskname);
@@ -68,8 +78,19 @@ public class TaskDAO implements ITaskDAO {
         if (updatedRiskValue != null) {
             task.setRiskValue(updatedRiskValue);
         }
+        if (updatedSprintValue != null) {
+            task.setSprint(updatedSprintValue);
+        }
+        if (updatedPriority != null) {
+            task.setPriority(updatedPriority);
+        }
+        if (updatedStatus != null) {
+            TaskStatus oldStatus = task.getStatus();
+            task.setStatus(updatedStatus);
+            TaskStatusHistory taskStatusHistory = new TaskStatusHistory(taskId, oldStatus, updatedStatus);
+            taskStatusHistoryService.addTaskStatusHistory(taskStatusHistory);
+        }
 
-        task.setLastDateStatusModified(new Timestamp(System.currentTimeMillis()));
         entityManager.merge(task);
     }
 

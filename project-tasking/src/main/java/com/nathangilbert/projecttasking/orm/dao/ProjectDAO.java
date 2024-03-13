@@ -35,7 +35,7 @@ public class ProjectDAO implements IProjectDAO {
     public Project findById(long projectId) {
         Project project = entityManager.find(Project.class, projectId);
         if (project == null) {
-            throw new com.nathangilbert.projecttasking.rest.exceptions.ProjectNotFoundException(
+            throw new ProjectNotFoundException(
                     PROJECT_NOT_FOUND_MESSAGE + projectId);
         }
         return project;

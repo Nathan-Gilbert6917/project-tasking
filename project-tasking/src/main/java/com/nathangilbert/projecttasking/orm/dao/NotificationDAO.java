@@ -13,8 +13,6 @@ public class NotificationDAO implements INotificationDAO {
 
     private EntityManager entityManager;
 
-    private final String NOTIFICATION_NOT_FOUND_MESSAGE = "Notification not found";
-
     @Autowired
     public NotificationDAO(EntityManager entityManager) {
         this.entityManager = entityManager;

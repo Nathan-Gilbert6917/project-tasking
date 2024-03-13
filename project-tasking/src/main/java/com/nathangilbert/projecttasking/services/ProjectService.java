@@ -3,6 +3,8 @@ package com.nathangilbert.projecttasking.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.Spring;
+
 import org.springframework.stereotype.Service;
 
 import com.nathangilbert.projecttasking.orm.dao.ProjectDAO;
@@ -11,6 +13,7 @@ import com.nathangilbert.projecttasking.orm.dao.TaskDAO;
 import com.nathangilbert.projecttasking.orm.entity.Notification;
 import com.nathangilbert.projecttasking.orm.entity.Project;
 import com.nathangilbert.projecttasking.orm.entity.ProjectUsers;
+import com.nathangilbert.projecttasking.orm.entity.Sprint;
 import com.nathangilbert.projecttasking.orm.entity.Task;
 import com.nathangilbert.projecttasking.orm.entity.User;
 import com.nathangilbert.projecttasking.orm.enums.NotificationEventType;
@@ -26,12 +29,14 @@ public class ProjectService implements IProjectService{
     private TaskDAO taskDAO;
 
     private NotificationService notificationService;
+    private ProjectCurrentSprintService projectCurrentSprintService;
 
-    public ProjectService(ProjectDAO projectDAO, ProjectUsersDAO projectUsersDAO, TaskDAO taskDAO, NotificationService notificationService) {
+    public ProjectService(ProjectDAO projectDAO, ProjectUsersDAO projectUsersDAO, TaskDAO taskDAO, NotificationService notificationService, ProjectCurrentSprintService projectCurrentSprintService) {
         this.projectDAO = projectDAO;
         this.projectUsersDAO = projectUsersDAO;
         this.taskDAO = taskDAO;
         this.notificationService = notificationService;
+        this.projectCurrentSprintService = projectCurrentSprintService;
     }
 
     @Override
@@ -83,6 +88,16 @@ public class ProjectService implements IProjectService{
     @Override
     public List<Task> getProjectTasks(long projectId) {
         return this.taskDAO.getProjectTasks(projectId);
+    }
+
+    @Override
+    public Sprint getCurrentSprint(Long projectId) {
+        return projectCurrentSprintService.getCurrentSprint(projectId);
+    }
+
+    @Override
+    public void setCurrentSprint(long projectId, Sprint newSprint) {
+        this.projectCurrentSprintService.setCurrentSprint(projectId, newSprint);
     }
 
     @Override

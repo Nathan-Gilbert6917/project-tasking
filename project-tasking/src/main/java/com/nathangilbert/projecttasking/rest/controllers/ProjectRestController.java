@@ -12,32 +12,35 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nathangilbert.projecttasking.orm.entity.InviteRequest;
 import com.nathangilbert.projecttasking.orm.entity.Project;
+import com.nathangilbert.projecttasking.orm.entity.Sprint;
 import com.nathangilbert.projecttasking.orm.entity.Task;
 import com.nathangilbert.projecttasking.services.ProjectService;
+import com.nathangilbert.projecttasking.services.SprintService;
 
 @RestController
 @RequestMapping(value = "/api/projects")
 public class ProjectRestController {
 
-    private ProjectService projectService;
+    private final ProjectService projectService;
+    private final SprintService sprintService;
 
     @Autowired
-    public ProjectRestController(ProjectService projectService) {
+    public ProjectRestController(ProjectService projectService, SprintService sprintService) {
         this.projectService = projectService;
+        this.sprintService = sprintService;
     }
 
-    // User CRUD
+    // Project CRUD
 
     @PostMapping("/create")
     public ResponseEntity<String> createProject(@RequestBody Project project) {
         projectService.createProject(project);
         projectService.joinProject(project.getProjectId(), project.getOwnerId());
-        return ResponseEntity.status(HttpStatus.OK).body("Successully created project:" + project);
+        return ResponseEntity.status(HttpStatus.OK).body("Successfully created project:" + project);
     }
 
     @GetMapping("/{projectId}")
@@ -109,4 +112,15 @@ public class ProjectRestController {
         return ResponseEntity.status(HttpStatus.OK).body("Successfully invited users to the project " + projectName);
     }
     
+    @GetMapping("/{projectId}/sprint")
+    public ResponseEntity<Sprint> getCurrentSprint(@PathVariable Long projectId) {
+        Sprint sprint = this.projectService.getCurrentSprint(projectId);
+        return ResponseEntity.status(HttpStatus.OK).body(sprint);
+    }
+
+    @GetMapping("/{projectId}/sprints")
+    public ResponseEntity<List<Sprint>> getAllProjectSprints(@PathVariable Long projectId) {
+        List<Sprint> sprints = this.sprintService.getAllProjectSprints(projectId);
+        return ResponseEntity.status(HttpStatus.OK).body(sprints);
+    }
 }

@@ -3,11 +3,15 @@ package com.nathangilbert.projecttasking.orm.entity;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+import com.nathangilbert.projecttasking.orm.enums.TaskPriority;
+import com.nathangilbert.projecttasking.orm.enums.TaskStatus;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -21,6 +25,10 @@ public class Task {
 
     @Column(name = "project_id")
     private Long projectId;
+
+    @ManyToOne
+    @Column(name = "sprint_id")
+    private Sprint sprint;
 
     @Column(name = "task_name", nullable = false)
     private String taskName;
@@ -37,29 +45,51 @@ public class Task {
     @Column(name = "risk_value")
     private Integer riskValue;
 
-    @Column(name = "status", length = 20, nullable = false)
-    private String status = "open";
+    @Column(name = "severity_value")
+    private Integer severityValue;
 
-    @Column(name = "last_date_status_modified", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private Timestamp lastDateStatusModified;
+    @Column(name = "is_bug")
+    private Boolean isBug;
+
+    @Column(name = "status", length = 20, nullable = false)
+    private TaskStatus status;
+
+    @Column(name = "priority")
+    private TaskPriority priority;
 
     @Column(name = "created_at", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Timestamp createdAt;
 
     public Task() {
-        this.lastDateStatusModified = new Timestamp(System.currentTimeMillis());
         this.createdAt = new Timestamp(System.currentTimeMillis());
     }
 
-    public Task(Long projectId, String taskName, String description, 
-            LocalDateTime dueDate, Integer effortValue, Integer riskValue) {
+    public Task(Long projectId, String taskName, String description,
+            LocalDateTime dueDate, Integer effortValue, Integer riskValue, TaskPriority priority, Boolean isBug) {
         this.projectId = projectId;
         this.taskName = taskName;
         this.description = description;
         this.dueDate = dueDate;
         this.effortValue = effortValue > 0 ? effortValue : -1;
         this.riskValue = riskValue > 0 ? riskValue : -1;
-        this.lastDateStatusModified = new Timestamp(System.currentTimeMillis());
+        this.priority = priority;
+        this.isBug = isBug;
+        this.status = TaskStatus.OPEN;
+        this.createdAt = new Timestamp(System.currentTimeMillis());
+    }
+
+    public Task(Long projectId, Sprint sprint, String taskName, String description, 
+            LocalDateTime dueDate, Integer effortValue, Integer riskValue, TaskPriority priority, Boolean isBug) {
+        this.projectId = projectId;
+        this.sprint = sprint;
+        this.taskName = taskName;
+        this.description = description;
+        this.dueDate = dueDate;
+        this.effortValue = effortValue > 0 ? effortValue : -1;
+        this.riskValue = riskValue > 0 ? riskValue : -1;
+        this.priority = priority;
+        this.isBug = isBug;
+        this.status = TaskStatus.OPEN;
         this.createdAt = new Timestamp(System.currentTimeMillis());
     }
 
@@ -79,6 +109,14 @@ public class Task {
 
     public void setProjectId(Long projectId) {
         this.projectId = projectId;
+    }
+
+    public Sprint getSprint() {
+        return sprint;
+    }
+
+    public void setSprint(Sprint sprint) {
+        this.sprint = sprint;
     }
 
     public String getTaskName() {
@@ -121,20 +159,28 @@ public class Task {
         this.riskValue = riskValue;
     }
 
-    public String getStatus() {
+    public Boolean getIsBug() {
+        return isBug;
+    }
+
+    public void setIsBug(Boolean isBug) {
+        this.isBug = isBug;
+    }
+
+    public TaskPriority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(TaskPriority priority) {
+        this.priority = priority;
+    }
+
+    public TaskStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(TaskStatus status) {
         this.status = status;
-    }
-
-    public Timestamp getLastDateStatusModified() {
-        return lastDateStatusModified;
-    }
-
-    public void setLastDateStatusModified(Timestamp lastDateStatusModified) {
-        this.lastDateStatusModified = lastDateStatusModified;
     }
 
     public Timestamp getCreatedAt() {

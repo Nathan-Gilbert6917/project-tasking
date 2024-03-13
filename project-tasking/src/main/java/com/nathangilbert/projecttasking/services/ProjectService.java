@@ -3,8 +3,6 @@ package com.nathangilbert.projecttasking.services;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.Spring;
-
 import org.springframework.stereotype.Service;
 
 import com.nathangilbert.projecttasking.orm.dao.ProjectDAO;

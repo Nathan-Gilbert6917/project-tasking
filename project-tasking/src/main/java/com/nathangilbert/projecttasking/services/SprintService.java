@@ -1,9 +1,6 @@
 package com.nathangilbert.projecttasking.services;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import org.hibernate.mapping.Array;
 
 import com.nathangilbert.projecttasking.orm.dao.SprintDAO;
 import com.nathangilbert.projecttasking.orm.entity.Sprint;
